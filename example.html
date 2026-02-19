@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>REDOE ERP — Dashboard</title>
+
+    <!-- Tailwind CDN (static Netlify POC) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      :root {
+        --brand-black: #0b0b0d;
+        --brand-black-2: #121216;
+        --brand-gold: #caa24a;
+        --brand-gold-2: #f0d57a;
+        --brand-white: #ffffff;
+        --brand-ink: #101018;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-100 text-slate-900">
+    <div class="min-h-screen lg:flex">
+      <!-- SIDEBAR (desktop) -->
+      <aside
+        class="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:inset-y-0"
+        style="
+          background: linear-gradient(
+            180deg,
+            var(--brand-black),
+            var(--brand-black-2)
+          );
+        "
+      >
+        <div class="h-full flex flex-col border-r border-white/10">
+          <!-- Brand block -->
+          <div class="p-6">
+            <div
+              class="rounded-2xl p-4 border border-white/10"
+              style="
+                background: radial-gradient(
+                  120% 120% at 10% 0%,
+                  rgba(202, 162, 74, 0.25),
+                  rgba(255, 255, 255, 0)
+                );
+              "
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="h-12 w-12 rounded-2xl flex items-center justify-center font-black text-lg"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      var(--brand-gold),
+                      var(--brand-gold-2)
+                    );
+                    color: var(--brand-ink);
+                  "
+                  id="brandBadge"
+                >
+                  K
+                </div>
+                <div class="leading-tight">
+                  <p class="text-white font-extrabold tracking-wide text-lg">
+                    REDOE
+                  </p>
+                  <p
+                    class="text-white/60 text-xs font-semibold tracking-widest"
+                  >
+                    Excellence Center
+                  </p>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <p class="text-white/70 text-xs">
+                  Welcome,
+                  <span class="text-white font-semibold" id="sidebarUserName"
+                    >Kevin</span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nav -->
+          <nav class="px-4 space-y-1" id="sideNav"></nav>
+
+          <!-- Sidebar footer -->
+          <div class="mt-auto p-4">
+            <div class="rounded-2xl p-4 border border-white/10 bg-white/5">
+              <p class="text-white font-semibold text-sm">Quick actions</p>
+              <div class="mt-3 grid grid-cols-1 gap-2">
+                <a
+                  href="#"
+                  class="rounded-xl px-3 py-2 text-xs font-semibold text-black text-center"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      var(--brand-gold),
+                      var(--brand-gold-2)
+                    );
+                  "
+                >
+                  + Task
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <div class="flex-1 lg:ml-72">
+        <!-- TOP BAR -->
+        <header
+          class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200"
+        >
+          <div
+            class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3"
+          >
+            <div>
+              <p class="text-xs text-slate-500" id="pageKicker">Dashboard</p>
+              <p class="text-lg font-bold">
+                Hi, <span id="topUserName">Kevin</span> 👋
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div
+                class="hidden sm:flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2"
+              >
+                <span class="text-slate-500 text-sm">Search</span>
+                <input
+                  class="w-56 outline-none text-sm"
+                  placeholder="Job # / customer..."
+                  aria-label="search"
+                />
+              </div>
+
+              <a
+                href="#"
+                class="inline-flex px-3 py-2 rounded-2xl text-sm font-semibold text-black"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    var(--brand-gold),
+                    var(--brand-gold-2)
+                  );
+                "
+              >
+                + Create Task
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 pb-24">
+          <!-- Quick stats -->
+          <section
+            class="grid grid-cols-2 lg:grid-cols-4 gap-3"
+            id="statsGrid"
+          ></section>
+
+          <!-- Main grid -->
+          <section class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <!-- Tasks -->
+            <div
+              class="lg:col-span-2 rounded-2xl bg-white border border-slate-200 overflow-hidden"
+            >
+              <div class="p-4 flex items-start justify-between gap-3">
+                <div>
+                  <h2 class="text-lg font-extrabold">Your Tasks</h2>
+                  <p class="text-sm text-slate-500">
+                    Focus list. Tap-to-open later.
+                  </p>
+                </div>
+                <a
+                  href="#"
+                  class="text-sm font-semibold hover:underline"
+                  style="color: var(--brand-black)"
+                  >View all</a
+                >
+              </div>
+
+              <div class="divide-y divide-slate-100" id="tasksList"></div>
+
+              <div
+                class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between"
+              >
+                <p class="text-sm text-slate-600">
+                  Next: clicking a task opens job → milestone → checklist.
+                </p>
+                <a
+                  href="#"
+                  class="text-sm font-semibold text-black hover:underline"
+                  >+ Quick add</a
+                >
+              </div>
+            </div>
+
+            <!-- Milestones -->
+            <div
+              class="rounded-2xl bg-white border border-slate-200 overflow-hidden"
+            >
+              <div class="p-4">
+                <h2 class="text-lg font-extrabold">Upcoming Milestones</h2>
+                <p class="text-sm text-slate-500">7–14 day view.</p>
+              </div>
+
+              <div class="px-4 pb-4 space-y-3" id="milestonesList"></div>
+
+              <div class="p-4 bg-slate-50 border-t border-slate-200">
+                <a
+                  href="#"
+                  class="w-full inline-flex items-center justify-center px-3 py-2 rounded-2xl text-sm font-semibold text-black"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      var(--brand-gold),
+                      var(--brand-gold-2)
+                    );
+                  "
+                >
+                  View Milestones
+                </a>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <nav
+          class="fixed bottom-0 inset-x-0 lg:hidden border-t border-slate-200 bg-white"
+        >
+          <div
+            class="px-3 py-2 grid grid-cols-4 text-[11px] font-semibold"
+            id="mobileNavTop"
+          ></div>
+          <div
+            class="px-3 pb-2 grid grid-cols-2 text-[11px] font-semibold"
+            id="mobileNavBottom"
+          ></div>
+        </nav>
+      </div>
+    </div>
+
+    <script>
+      // ---------------------------
+      // POC DATA (static)
+      // ---------------------------
+      const state = {
+        user: { name: "Kevin" },
+        nav: [
+          { label: "Dashboard", href: "index.html" },
+          { label: "Jobs", href: "#" },
+          { label: "Milestones", href: "#" },
+          { label: "Checklist", href: "#" },
+          { label: "Work Orders", href: "#" },
+          { label: "Reports", href: "#" },
+        ],
+        activeHref: "index.html",
+        stats: [
+          { label: "Open Tasks", value: 7, accent: false },
+          { label: "Due This Week", value: 4, accent: false },
+          { label: "Overdue", value: 2, accent: true },
+          { label: "Active Jobs", value: 5, accent: false },
+        ],
+        tasks: [
+          {
+            title: "Upload customer PO + confirm scope",
+            job: "J-24019",
+            customer: "Acme Plastics",
+            due: "2026-02-05",
+            priority: "High",
+            status: "To Do",
+          },
+          {
+            title: "Review prelim checklist findings",
+            job: "J-24011",
+            customer: "Northline Auto",
+            due: "2026-02-03",
+            priority: "Medium",
+            status: "Doing",
+          },
+          {
+            title: "Confirm plant packaging requirements",
+            job: "J-24007",
+            customer: "Metro Foods",
+            due: "2026-01-30",
+            priority: "High",
+            status: "Blocked",
+          },
+        ],
+        milestones: [
+          {
+            name: "Prelim Checklist",
+            job: "J-24019",
+            customer: "Acme Plastics",
+            due: "2026-02-06",
+            progress: 35,
+          },
+          {
+            name: "Intermediate Design Checklist",
+            job: "J-24011",
+            customer: "Northline Auto",
+            due: "2026-02-10",
+            progress: 10,
+          },
+          {
+            name: "Final Design Checklist",
+            job: "J-24007",
+            customer: "Metro Foods",
+            due: "2026-02-02",
+            progress: 60,
+          },
+        ],
+      };
+
+      // ---------------------------
+      // HELPERS
+      // ---------------------------
+      const $ = (sel) => document.querySelector(sel);
+
+      function escapeHtml(s) {
+        return String(s).replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;",
+            })[m],
+        );
+      }
+
+      function badgeClasses(status) {
+        switch (status) {
+          case "To Do":
+            return "bg-slate-100 text-slate-700 ring-1 ring-slate-200";
+          case "Doing":
+            return "bg-blue-50 text-blue-700 ring-1 ring-blue-200";
+          case "Blocked":
+            return "bg-amber-50 text-amber-800 ring-1 ring-amber-200";
+          case "Done":
+            return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200";
+          default:
+            return "bg-slate-100 text-slate-700 ring-1 ring-slate-200";
+        }
+      }
+
+      function priorityDot(priority) {
+        switch (priority) {
+          case "High":
+            return "bg-red-500";
+          case "Medium":
+            return "bg-amber-500";
+          case "Low":
+            return "bg-emerald-500";
+          default:
+            return "bg-slate-400";
+        }
+      }
+
+      function goldGradient() {
+        return "linear-gradient(135deg, var(--brand-gold), var(--brand-gold-2))";
+      }
+
+      // ---------------------------
+      // RENDER
+      // ---------------------------
+      function renderNav() {
+        const side = $("#sideNav");
+        side.innerHTML = state.nav
+          .slice(0, 5) // keep sidebar tight (you can show all if you want)
+          .map((item) => {
+            const isActive = item.href === state.activeHref;
+            return `
+            <a href="${escapeHtml(item.href)}"
+              class="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+                isActive ? "text-black" : "text-white/80 hover:text-white"
+              }"
+              style="${
+                isActive
+                  ? `background: ${goldGradient()};`
+                  : "background: rgba(255,255,255,0);"
+              }">
+              <span class="h-2.5 w-2.5 rounded-full ${
+                isActive ? "bg-black/70" : "bg-white/30"
+              }"></span>
+              <span>${escapeHtml(item.label)}</span>
+            </a>
+          `;
+          })
+          .join("");
+
+        // mobile nav: 4 + 2 layout (like your Work Orders page)
+        const top = $("#mobileNavTop");
+        const bottom = $("#mobileNavBottom");
+
+        const mobileTopItems = [
+          { label: "Dashboard", href: "index.html" },
+          { label: "Jobs", href: "#" },
+          { label: "Milestones", href: "#" },
+          { label: "Checklist", href: "#" },
+        ];
+        const mobileBottomItems = [
+          { label: "Work Orders", href: "#" },
+          { label: "Reports", href: "#" },
+        ];
+
+        const mobileLink = (item) => {
+          const isActive = item.href === state.activeHref;
+          return `
+            <a class="py-2 text-center ${isActive ? "" : "text-slate-600"}"
+               style="${isActive ? "color: var(--brand-black);" : ""}"
+               href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>
+          `;
+        };
+
+        top.innerHTML = mobileTopItems.map(mobileLink).join("");
+        bottom.innerHTML = mobileBottomItems.map(mobileLink).join("");
+      }
+
+      function renderUser() {
+        $("#sidebarUserName").textContent = state.user.name;
+        $("#topUserName").textContent = state.user.name;
+        $("#brandBadge").textContent =
+          state.user.name?.[0]?.toUpperCase() || "K";
+      }
+
+      function renderStats() {
+        const grid = $("#statsGrid");
+        grid.innerHTML = state.stats
+          .map((c) => {
+            const barStyle = c.accent
+              ? "background:#ef4444"
+              : `background:${goldGradient()}`;
+            return `
+            <div class="rounded-2xl bg-white border border-slate-200 p-4">
+              <p class="text-sm text-slate-500">${escapeHtml(c.label)}</p>
+              <p class="mt-1 text-2xl font-extrabold ${c.accent ? "text-red-600" : ""}">
+                ${escapeHtml(c.value)}
+              </p>
+              <div class="mt-3 h-1.5 w-16 rounded-full" style="${barStyle};"></div>
+            </div>
+          `;
+          })
+          .join("");
+      }
+
+      function renderTasks() {
+        const list = $("#tasksList");
+        list.innerHTML = state.tasks
+          .map((t) => {
+            return `
+            <div class="p-4 flex gap-3 hover:bg-slate-50 transition">
+              <div class="mt-1 h-2.5 w-2.5 rounded-full ${priorityDot(t.priority)}"></div>
+
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-3">
+                  <p class="font-semibold truncate">${escapeHtml(t.title)}</p>
+                  <span class="shrink-0 inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${badgeClasses(
+                    t.status,
+                  )}">
+                    ${escapeHtml(t.status)}
+                  </span>
+                </div>
+
+                <p class="mt-1 text-sm text-slate-500 truncate">
+                  ${escapeHtml(t.job)} • ${escapeHtml(t.customer)}
+                </p>
+
+                <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                  <span><span class="font-semibold text-slate-700">Due:</span> ${escapeHtml(
+                    t.due,
+                  )}</span>
+                  <span><span class="font-semibold text-slate-700">Priority:</span> ${escapeHtml(
+                    t.priority,
+                  )}</span>
+                </div>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+      }
+
+      function renderMilestones() {
+        const list = $("#milestonesList");
+        list.innerHTML = state.milestones
+          .map((m) => {
+            return `
+            <div class="rounded-2xl border border-slate-200 p-3 hover:bg-slate-50 transition">
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <p class="font-semibold truncate">${escapeHtml(m.name)}</p>
+                  <p class="text-sm text-slate-500 truncate">
+                    ${escapeHtml(m.job)} • ${escapeHtml(m.customer)}
+                  </p>
+                </div>
+                <p class="shrink-0 text-xs font-semibold text-slate-700">${escapeHtml(m.due)}</p>
+              </div>
+
+              <div class="mt-3">
+                <div class="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                  <div class="h-2" style="width:${Number(m.progress) || 0}%; background:${goldGradient()};"></div>
+                </div>
+                <p class="mt-1 text-xs text-slate-500">${Number(m.progress) || 0}% complete</p>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+      }
+
+      // ---------------------------
+      // INIT
+      // ---------------------------
+      renderUser();
+      renderNav();
+      renderStats();
+      renderTasks();
+      renderMilestones();
+    </script>
+  </body>
+</html>
